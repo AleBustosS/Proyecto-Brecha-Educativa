@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap');
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #eef2f7, #dfe9f3);
+    color: #2c3e50;
+}
+
+.navbar {
+    position: sticky;
+    top: 0;
+    background: white;
+    padding: 15px 40px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.08);
+}
+
+.nav-links {
+    display: flex;
+    gap: 15px;
+    margin: auto;
+}
+
+.nav-btn {
+    padding: 8px 18px;
+    border-radius: 25px;
+    background: #eef2f7;
+    text-decoration: none;
+    color: #333;
+    transition: 0.3s;
+}
+
+.nav-btn:hover {
+    background: #1f3c88;
+    color: white;
+}
+
+.container {
+    max-width: 950px;
+    margin: auto;
+    padding: 50px 20px;
+}
+
+.title {
+    font-size: 42px;
+    font-weight: 800;
+    text-align: center;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 20px;
+    color: #555;
+    margin-bottom: 40px;
+}
+
+.text {
+    font-size: 18px;
+    line-height: 1.7;
+    text-align: center;
+}
+
+.section {
+    margin-bottom: 80px;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0px 10px 30px rgba(0,0,0,0.08);
+    margin: 30px 0;
+}
+
+.conclusion-box {
+    background: linear-gradient(135deg, #1f3c88, #3b5998);
+    color: white;
+    padding: 35px;
+    border-radius: 18px;
+    text-align: center;
+    margin-top: 50px;
+}
