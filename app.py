@@ -5,6 +5,7 @@ import json
 import unicodedata
 
 app = Dash(__name__)
+server = app.server
 
 # ======================
 # NORMALIZAR TEXTO
