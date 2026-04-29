@@ -8,13 +8,13 @@ df = pd.read_excel(
     names=["estado", "escolaridad"]
 )
 
-# 1. Eliminar fila nacional 
+
 df = df[df["estado"] != "Estados Unidos Mexicanos"]
 
-# 2. Eliminar toda la "basura" del final (fuentes, notas, definiciones)
+
 df = df.dropna(subset=["escolaridad"])
 
-# 3. Resetear el índice para que quede limpio
+
 df = df.reset_index(drop=True)
 
 print(df)

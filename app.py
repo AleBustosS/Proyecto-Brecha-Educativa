@@ -7,9 +7,7 @@ import unicodedata
 app = Dash(__name__)
 server = app.server
 
-# ======================
-# NORMALIZAR TEXTO
-# ======================
+
 def normalizar(texto):
     if isinstance(texto, str):
         texto = texto.strip().lower()
@@ -19,9 +17,7 @@ def normalizar(texto):
         )
     return texto
 
-# ======================
-# DATA
-# ======================
+
 df = pd.read_csv("data/escolaridad.csv")
 
 df["estado"] = df["estado"].replace({
@@ -30,9 +26,6 @@ df["estado"] = df["estado"].replace({
     "Veracruz de Ignacio de la Llave": "Veracruz"
 })
 
-# ======================
-# GEOJSON
-# ======================
 with open("data/mexico.json", encoding="utf-8") as f:
     geojson = json.load(f)
 
@@ -41,17 +34,13 @@ df["estado_norm"] = df["estado"].apply(normalizar)
 for f in geojson["features"]:
     f["properties"]["name_norm"] = normalizar(f["properties"]["name"])
 
-# ======================
-# VARIABLES
-# ======================
+
 df = df.sort_values(by="escolaridad", ascending=True)
 
 promedio = df["escolaridad"].mean()
 df["diferencia"] = df["escolaridad"] - promedio
 
-# ======================
-# 1. PANORAMA
-# ======================
+
 fig1 = px.bar(
     df,
     x="escolaridad",
@@ -64,9 +53,7 @@ fig1 = px.bar(
 fig1.update_layout(height=900, margin=dict(l=200))
 fig1.update_traces(marker_line_color="white", marker_line_width=1)
 
-# ======================
-# 2. BRECHA
-# ======================
+
 fig_diff = px.bar(
     df,
     x="diferencia",
@@ -78,9 +65,7 @@ fig_diff = px.bar(
 
 fig_diff.add_vline(x=0, line_dash="dash", line_color="black")
 
-# ======================
-# 3. MAPA
-# ======================
+
 fig_map = px.choropleth(
     df,
     geojson=geojson,
@@ -93,13 +78,11 @@ fig_map = px.choropleth(
 fig_map.update_geos(fitbounds="locations", visible=False)
 fig_map.update_traces(marker_line_color="white", marker_line_width=1)
 
-# ======================
-# 4. EXPLORA TU ESTADO (CORREGIDA)
-# ======================
+
 def crear_fig_estado(estado):
     valor = df[df["estado"] == estado]["escolaridad"].values[0]
     
-    # Color dinámico: Azul si está arriba/igual al promedio, Rojo si está por debajo
+    
     color_estado = "#08519c" if valor >= promedio else "#b2182b"
     
     temp = pd.DataFrame({
@@ -112,31 +95,28 @@ def crear_fig_estado(estado):
         x="Categoría",
         y="Valor",
         color="Categoría",
-        text="Valor",  # <--- EL CAMBIO CLAVE ESTÁ AQUÍ
+        text="Valor",  
         color_discrete_map={
             estado: color_estado,
             "Promedio Nacional": "#c2cce3"
         }
     )
 
-    # Mejorar la apariencia de las barras y el texto
     fig.update_traces(
-        texttemplate='<b>%{text:.2f}</b> años', # Ahora %{text} toma el valor correcto de cada barra
-        textposition="outside",
-        textfont_size=18,
+        texttemplate='<b>%{text:.2f}</b> años', 
         marker_line_color="white",
         marker_line_width=1.5
     )
 
-    # Calcular la diferencia para mostrarla como subtítulo
+
     diff = valor - promedio
     if diff >= 0:
         texto_diff = f"<span style='color: #08519c;'><b>+{diff:.2f} años</b> por encima del promedio nacional</span>"
     else:
-        # Se formatea en positivo para evitar el "--" ya que el texto dice "por debajo"
+        
         texto_diff = f"<span style='color: #b2182b;'><b>{abs(diff):.2f} años</b> por debajo del promedio nacional</span>"
 
-    # Limpieza visual profunda (sin eje Y, sin cuadrícula)
+
     fig.update_layout(
         template="plotly_white",
         height=450,
@@ -151,25 +131,23 @@ def crear_fig_estado(estado):
         margin=dict(t=120, b=40, l=40, r=40),
         yaxis=dict(
             title="",
-            showticklabels=False,  # Ocultar números del eje Y
-            showgrid=False,        # Quitar la cuadrícula
+            showticklabels=False,  
+            showgrid=False,        
             zeroline=False,
-            range=[0, max(valor, promedio) * 1.25]  # Dar espacio extra arriba para el texto
+            range=[0, max(valor, promedio) * 1.25]  
         ),
         xaxis=dict(
             title="",
             showgrid=False,
-            tickfont=dict(size=16, color="#333333")  # Nombres de las categorías más legibles
+            tickfont=dict(size=16, color="#333333")  
         ),
         showlegend=False,
-        plot_bgcolor="rgba(0,0,0,0)",  # Fondo transparente
-        paper_bgcolor="rgba(0,0,0,0)"  # Fondo transparente
+        plot_bgcolor="rgba(0,0,0,0)",  
+        paper_bgcolor="rgba(0,0,0,0)"  
     )
 
     return fig
-# ======================
-# LAYOUT
-# ======================
+
 app.layout = html.Div([
 
     # NAVBAR
@@ -193,7 +171,7 @@ app.layout = html.Div([
             className="subtitle"
         ),
 
-        # PANORAMA
+        
         html.Div([
             html.H2("Panorama nacional", id="panorama"),
             html.P("Nivel educativo por estado.", className="text"),
@@ -201,7 +179,7 @@ app.layout = html.Div([
             html.P("Existen diferencias claras entre entidades.", className="text"),
         ], className="section"),
 
-        # BRECHA
+        
         html.Div([
             html.H2("Brecha educativa", id="brecha"),
             html.P("Diferencia respecto al promedio nacional.", className="text"),
@@ -209,7 +187,7 @@ app.layout = html.Div([
             html.P("Los valores negativos indican rezago.", className="text"),
         ], className="section"),
 
-        # MAPA
+        
         html.Div([
             html.H2("Distribución geográfica", id="mapa"),
             html.P("Dónde se concentra la desigualdad.", className="text"),
@@ -217,7 +195,7 @@ app.layout = html.Div([
             html.P("El sur presenta menor escolaridad.", className="text"),
         ], className="section"),
 
-        # EXPLORAR (MEJORADA)
+        
         html.Div([
             html.H2("Explora tu estado", id="explorar"),
             html.P(
@@ -244,7 +222,7 @@ app.layout = html.Div([
 
         ], className="section"),
 
-        # CONCLUSIÓN
+    
         html.Div([
             html.H2("Conclusión"),
             html.P(
@@ -256,9 +234,7 @@ app.layout = html.Div([
 
 ])
 
-# ======================
-# CALLBACK
-# ======================
+
 @app.callback(
     Output("grafica-estado", "figure"),
     Input("estado-dropdown", "value")
@@ -266,8 +242,6 @@ app.layout = html.Div([
 def update_graph(estado):
     return crear_fig_estado(estado)
 
-# ======================
-# RUN
-# ======================
+
 if __name__ == "__main__":
     app.run(debug=True)
