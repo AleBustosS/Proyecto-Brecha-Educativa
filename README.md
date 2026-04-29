@@ -2,14 +2,16 @@
 
 ## 🧠 Descripción del proyecto
 
-Este proyecto analiza la **desigualdad educativa en México** a partir del *grado promedio de escolaridad por entidad federativa*.
+Este proyecto analiza la **desigualdad educativa en México**, utilizando como indicador principal el *grado promedio de escolaridad de la población de 15 años y más* por entidad federativa.
 
-La aplicación está desarrollada con **Dash (Plotly)** y permite visualizar:
+A través de una aplicación web interactiva desarrollada con **Dash (Plotly)**, se transforman datos estadísticos en visualizaciones que permiten identificar diferencias regionales, brechas educativas y patrones geográficos entre estados.
 
-- 📌 El nivel educativo por estado  
-- 📌 La brecha respecto al promedio nacional  
-- 📌 La distribución geográfica de la educación  
-- 📌 Comparación interactiva entre estados  
+La aplicación permite:
+
+- 📌 Visualizar el nivel educativo promedio por estado  
+- 📌 Analizar la brecha respecto al promedio nacional  
+- 📌 Explorar la distribución geográfica de la educación  
+- 📌 Comparar de forma interactiva cualquier estado con el promedio nacional  
 
 ---
 
@@ -20,39 +22,53 @@ La aplicación está desarrollada con **Dash (Plotly)** y permite visualizar:
 ---
 
 ## 📂 Estructura del proyecto
-
 Proyecto/
-│
-├── app.py
-├── limpieza_de_datos.py
+├── app.py # Aplicación principal (Dash)
+├── limpieza_de_datos.py # Script de limpieza de datos
 ├── data/
-│ ├── escolaridad.csv
-│ ├── Educacion_05.xlsx
-│ └── mexico.json
-│
+│ ├── escolaridad.csv # Dataset limpio
+│ ├── Educacion_05.xlsx # Datos originales
+│ └── mexico.json # GeoJSON para el mapa
 ├── assets/
-│ └── styles.css
-│
+│ └── styles.css # Estilos de la app
 └── README.md
+
+
 ---
 
 ## 📊 Datos utilizados
 
-Los datos provienen de fuentes oficiales:
+- **INEGI (2020)** – Censo de Población y Vivienda  
+  https://www.inegi.org.mx/programas/ccpv/2020/  
+  Fecha de descarga: 26/04/2026  
 
-- INEGI (2020): Grado promedio de escolaridad por entidad federativa  
-- GeoJSON: Límites territoriales de México  
+- **GeoJSON de México**  
+  https://github.com/angelnmara/geojson  
+
+---
+
+## 🧹 Procesamiento de datos
+
+El archivo `limpieza_de_datos.py` se utilizó para:
+
+- Limpiar y estructurar los datos originales  
+- Eliminar información irrelevante  
+- Generar el dataset final (`escolaridad.csv`)  
+
+---
+
+## 🌐 Aplicación en línea
+
+🔗 https://proyecto-brecha-educativa.onrender.com/
 
 ---
 
 ## ⚙️ Requisitos
 
-Antes de ejecutar el proyecto, asegúrate de tener instalado:
+- Python 3.9 o superior  
+- pip  
 
-- Python 3.9+
-- pip
-
-Instala las dependencias:
+Instalar dependencias:
 
 ```bash
 pip install dash pandas plotly
